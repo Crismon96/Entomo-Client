@@ -1,13 +1,19 @@
+import { IonButton } from '@ionic/react';
 import React from 'react';
+import usePhotoGallery from '../utils/hooks/usePhotoGallery.ts/usePhotoGallery';
 import './ExploreContainer.css';
 
-interface ContainerProps { }
+interface ContainerProps {}
 
 const ExploreContainer: React.FC<ContainerProps> = () => {
+  const { takePhoto } = usePhotoGallery();
+
   return (
     <div className="container">
       <strong>Ready to create an app?</strong>
-      <p>Start with Ionic <a target="_blank" rel="noopener noreferrer" href="https://ionicframework.com/docs/components">UI Components</a></p>
+      <IonButton onClick={async () => await takePhoto()} color="primary">
+        Primary
+      </IonButton>
     </div>
   );
 };
