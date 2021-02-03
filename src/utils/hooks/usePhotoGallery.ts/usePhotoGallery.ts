@@ -6,16 +6,44 @@ function usePhotoGallery() {
 
   const takePhoto = async () => {
     const cameraPhoto = await getPhoto({
-      resultType: CameraResultType.Uri,
+      resultType: CameraResultType.DataUrl,
       source: CameraSource.Camera,
       quality: 100,
     });
 
-    console.log('cameraPhoto: ', cameraPhoto);
+    const { dataUrl } = cameraPhoto;
+
+    if (dataUrl) {
+      const data = await fetch(dataUrl);
+      const blob = await data.blob();
+
+      let formData = new FormData();
+      formData.append('photo', blob, 'ID123');
+
+      const response = await fetch('http://localhost:8000/analyse', {
+        method: 'PUT',
+        body: formData,
+      })
+        .then((res) => console.log('res', res))
+        .catch((error) => console.log('ERROR: ', error));
+    }
+  };
+
+  const retrievePhoto = async () => {
+    const imageData = await fetch('http://localhost:8000/favorite').then((res) => res.blob());
+
+    const urlCreator = window.URL ?? window.webkitURL;
+
+    const imageElement: any = document.getElementById('myImage');
+
+    if (imageElement) {
+      imageElement.src = urlCreator.createObjectURL(imageData);
+    }
   };
 
   return {
     takePhoto,
+    retrievePhoto,
   };
 }
 

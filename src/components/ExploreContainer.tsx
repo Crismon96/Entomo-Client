@@ -6,14 +6,21 @@ import './ExploreContainer.css';
 interface ContainerProps {}
 
 const ExploreContainer: React.FC<ContainerProps> = () => {
-  const { takePhoto } = usePhotoGallery();
+  const { takePhoto, retrievePhoto } = usePhotoGallery();
 
   return (
     <div className="container">
-      <strong>Ready to create an app?</strong>
+      <strong>Take a photo of your bug</strong>
+      <br />
       <IonButton onClick={async () => await takePhoto()} color="primary">
-        Primary
+        Take now!
       </IonButton>
+
+      <IonButton onClick={async () => await retrievePhoto()} color="primary">
+        Retrieve Photo!
+      </IonButton>
+
+      <img id="myImage" />
     </div>
   );
 };
